@@ -36,10 +36,3 @@ def generate_color_range(hex_color, hue_offset=10, saturation_offset=50, value_o
         min(255, base_hsv[2] + value_offset)  # Limite superior para el valor (V)
     ])
     return lower_bound, upper_bound
-
-# Ejemplo de uso
-hex_color = '#A98875'
-lower_bound, upper_bound = generate_color_range(hex_color)
-
-print(f"Lower Bound HSV: {lower_bound}")
-print(f"Upper Bound HSV: {upper_bound}")
