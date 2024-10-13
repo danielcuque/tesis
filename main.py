@@ -2,6 +2,8 @@ import inquirer
 from vasijas import vasijas
 
 def main():
+    vasijas.main()
+    return
     questions = [
         inquirer.List('opcion',
                       message="¿Qué desea realizar?",
