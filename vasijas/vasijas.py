@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 from utils import utils
+from collections import Counter
 
 def filter_contours_by_aspect_ratio(contours, min_ratio=0.2, max_ratio=4.0, min_area=10, max_area=1000):
     filtered_contours = []
@@ -25,7 +26,7 @@ def main():
     input_folder = './assets/dataset_vasijas/'
 
     # Colores a detectar
-    color_to_detect = '#A98875'
+    color_to_detect = '#A98876'
     # color_to_detect = '#B58C7E'
 
     # Obtener lista de archivos en el directorio de entrada
