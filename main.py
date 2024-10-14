@@ -1,8 +1,9 @@
 import inquirer
 from vasijas import vasijas
+from glifos import glifos
 
 def main():
-    vasijas.main()
+    glifos.main()
     return
     questions = [
         inquirer.List('opcion',
