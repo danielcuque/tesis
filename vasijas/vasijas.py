@@ -10,13 +10,19 @@ def filter_contours_by_aspect_ratio(contours, min_ratio=0.2, max_ratio=4.0, min_
         aspect_ratio = float(w) / h if h != 0 else 0
         area = cv2.contourArea(contour)
         
-        if min_ratio <= aspect_ratio <= max_ratio and area >= min_area and area <= max_area:
+        if min_ratio <= aspect_ratio <= max_ratio and min_area <= area <= max_area:
             filtered_contours.append(contour)
     
     return filtered_contours
 
+def save_image(output_folder, filename, image):
+    """Función auxiliar para guardar la imagen en el directorio."""
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    cv2.imwrite(os.path.join(output_folder, filename), image)
+
 def main():
-    # Crear el output folder si no existe
+    # Crear el output folder general si no existe
     output_folder = './assets/results/vasijas/'
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -32,6 +38,12 @@ def main():
 
     # Recorrer todos los archivos de imagen
     for image_file in image_files:
+        # Crear carpeta específica para cada imagen
+        image_name = os.path.splitext(image_file)[0]  # Quitar extensión del nombre de la imagen
+        image_folder = os.path.join(output_folder, image_name)
+        if not os.path.exists(image_folder):
+            os.makedirs(image_folder)
+
         # Path completo de la imagen
         image_path = os.path.join(input_folder, image_file)
 
@@ -45,6 +57,7 @@ def main():
 
         # Convertir a HSV
         hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        save_image(image_folder, 'hsv.png', hsv_image)
 
         # Obtener límites de color
         lower_bound, upper_bound = utils.generate_color_range(color_to_detect, 10, 50, 50)
@@ -54,15 +67,24 @@ def main():
 
         # Redimensionar imágenes
         original_resized = utils.resize_image(image, 780, 540)
+        
         mask_resized = utils.resize_image(mask, 780, 540)
+        save_image(image_folder, 'mask.png', mask_resized)
 
-        # Aplicar operaciones morfológicas para suavizar los bordes
-        kernel = np.ones((5,5), np.uint8)
+        """ Aplicar operaciones morfológicas para suavizar los bordes """
+        kernel = np.ones((5, 5), np.uint8)
+
+        """ Dilatación """
         mask_dilated = cv2.dilate(mask_resized, kernel, iterations=1)
-        mask_eroded = cv2.erode(mask_dilated, kernel, iterations=1)
+        save_image(image_folder, 'dilated.png', mask_dilated)
 
-        # Aplicar suavizado gaussiano
-        mask_smoothed = cv2.GaussianBlur(mask_eroded, (5,5), 0)
+        """ Erosionada """
+        mask_eroded = cv2.erode(mask_dilated, kernel, iterations=1)
+        save_image(image_folder, 'eroded.png', mask_eroded)
+
+        """ Suavizado gaussiano """
+        mask_smoothed = cv2.GaussianBlur(mask_eroded, (5, 5), 0)
+        save_image(image_folder, 'smooth.png', mask_smoothed)
 
         # Encontrar contornos en la máscara suavizada
         contours, _ = cv2.findContours(mask_smoothed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -77,13 +99,15 @@ def main():
         contour_image = original_resized.copy()
         cv2.drawContours(contour_image, filtered_contours, -1, (0, 255, 0), 1)  # Dibujar contornos en verde
 
+        # Guardar la imagen con contornos
+        save_image(image_folder, 'contours.png', contour_image)
+
         # Agregar un label con la cantidad de figuras detectadas
         text = f'Cantidad de restos encontrados: {num_figures}'
         cv2.putText(contour_image, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
-        # Guardar la imagen procesada en el directorio de salida con el mismo nombre que la original
-        output_path = os.path.join(output_folder, image_file)
-        cv2.imwrite(output_path, contour_image)
+        # Guardar la imagen final con el texto
+        save_image(image_folder, 'final_result.png', contour_image)
 
         # Mostrar la cantidad de figuras detectadas en consola
         print(f'Imagen: {image_file} - Cantidad de figuras detectadas: {num_figures}')

@@ -3,8 +3,8 @@ from vasijas import vasijas
 from glifos import glifos
 
 def main():
-    vasijas.main()
-    return
+    # vasijas.main()
+    # return
     questions = [
         inquirer.List('opcion',
                       message="¿Qué desea realizar?",
