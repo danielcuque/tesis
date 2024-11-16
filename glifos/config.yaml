@@ -1,0 +1,11 @@
+path: C:\Users\danie\OneDrive\Desktop\USAC SEGUNDO SEMESTRE 2024\SEMINARIO DE INVESTIGACION\MAGISTRAL\tesis\assets\dataset_glifos
+train: images/train  # train images (relative to 'path')
+val: images/train  # val images (relative to 'path')
+
+# Classes
+names:
+  0: a
+  1: e
+  2: i
+  3: o
+  4: u
