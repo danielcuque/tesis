@@ -6,14 +6,14 @@ epochs: 50
 time: null
 patience: 100
 batch: 16
-imgsz: 877
+imgsz: 640
 save: true
 save_period: -1
 cache: false
 device: null
 workers: 8
 project: null
-name: train
+name: train2
 exist_ok: false
 pretrained: true
 optimizer: auto
@@ -105,4 +105,4 @@ crop_fraction: 1.0
 cfg: null
 tracker: botsort.yaml
 save_dir: C:\Users\danie\OneDrive\Desktop\USAC SEGUNDO SEMESTRE 2024\SEMINARIO DE
-  INVESTIGACION\MAGISTRAL\tesis\runs\detect\train
+  INVESTIGACION\MAGISTRAL\tesis\runs\detect\train2

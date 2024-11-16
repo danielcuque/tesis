@@ -51,5 +51,5 @@ def predict():
         source=source_dir,  # Directorio o archivo de entrada
         save=True,          # Guarda automáticamente las imágenes procesadas
         project=output_dir, # Especifica el directorio base para guardar resultados
-        conf=0.020,         # Umbral de confianza para las detecciones
+        conf=0.01,         # Umbral de confianza para las detecciones
     )
