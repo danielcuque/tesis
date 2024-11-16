@@ -163,3 +163,5 @@ cython_debug/
 
 
 /assets/results/*
+/assets/dataset_glifos/
+/assets/dataset_glifos/labels/train/*

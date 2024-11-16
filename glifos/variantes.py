@@ -6,7 +6,7 @@ from albumentations.pytorch import ToTensorV2
 
 # Definir el pipeline de aumento de datos
 transform = A.Compose([
-    A.Rotate(limit=30, p=1.0),  # Rotación entre -30 y 30 grados
+    A.Rotate(limit=30, p=1.0, border_mode=cv2.BORDER_CONSTANT),  # Rotación con borde constante
     A.RandomScale(scale_limit=(0.8, 1.2), p=1.0),  # Escalado entre 0.8 y 1.2
     A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=1.0),  # Brillo y contraste
     A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20, p=1.0),  # Cambio de color
@@ -25,6 +25,13 @@ def generate_variations(image_path, output_dir, num_variants=300):
         print(f"No se pudo cargar la imagen: {image_path}")
         return
     
+    # Obtener el nombre de la carpeta de la imagen
+    folder_name = os.path.basename(os.path.dirname(image_path))
+    output_folder = os.path.join(output_dir, folder_name)
+
+    # Crear el directorio de salida si no existe
+    os.makedirs(output_folder, exist_ok=True)
+    
     # Generar variantes
     for i in range(num_variants):
         augmented = transform(image=img)
@@ -37,7 +44,7 @@ def generate_variations(image_path, output_dir, num_variants=300):
         augmented_image = np.clip(augmented_image * 255, 0, 255).astype(np.uint8)
         
         filename = os.path.basename(image_path)
-        output_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}_variant_{i+1}.png")
+        output_path = os.path.join(output_folder, f"{os.path.splitext(filename)[0]}_variant_{i+1}.png")
 
         # Reemplazar las diagonales invertidas por diagonales hacia adelante
         output_path = output_path.replace("\\", "/")
@@ -47,9 +54,6 @@ def generate_variations(image_path, output_dir, num_variants=300):
         print(f"Imagen generada: {output_path}")
 
 def process_directory(input_dir, output_dir, num_variants=300):
-    # Crear directorio de salida si no existe
-    os.makedirs(output_dir, exist_ok=True)
-    
     # Iterar sobre cada imagen en el directorio de entrada
     for filename in os.listdir(input_dir):
         # Asegurarse de que es una imagen

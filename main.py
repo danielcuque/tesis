@@ -4,9 +4,9 @@ from glifos import glifos
 from glifos import variantes
 
 def main():
-    input_dir = 'assets/dataset_glifos/a'
-    output_dir = 'assets/dataset_glifos/generated_images'
-    variantes.process_directory(input_dir, output_dir, 25)
+    # input_dir = 'assets/dataset_glifos/a'
+    # output_dir = 'assets/dataset_glifos/generated_images'
+    # variantes.process_directory(input_dir, output_dir, 50)
 
     questions = [
         inquirer.List('opcion',

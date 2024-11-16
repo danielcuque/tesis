@@ -5,7 +5,3 @@ val: images/train  # val images (relative to 'path')
 # Classes
 names:
   0: a
-  1: e
-  2: i
-  3: o
-  4: u

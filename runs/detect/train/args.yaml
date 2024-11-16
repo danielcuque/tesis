@@ -2,11 +2,11 @@ task: detect
 mode: train
 model: yolov8n.yaml
 data: glifos/config.yaml
-epochs: 1
+epochs: 50
 time: null
 patience: 100
 batch: 16
-imgsz: 640
+imgsz: 877
 save: true
 save_period: -1
 cache: false
