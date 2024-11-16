@@ -1,10 +1,13 @@
 import inquirer
 from vasijas import vasijas
 from glifos import glifos
+from glifos import variantes
 
 def main():
-    # vasijas.main()
-    # return
+    input_dir = 'assets/dataset_glifos/a'
+    output_dir = 'assets/dataset_glifos/generated_images'
+    variantes.process_directory(input_dir, output_dir, 25)
+
     questions = [
         inquirer.List('opcion',
                       message="¿Qué desea realizar?",
@@ -19,7 +22,8 @@ def main():
 
     if answers['opcion'] == '1. Análisis de glifos':
         print("Ejecutando análisis de glifos")
-        # glifos()
+        glifos.train()
+        # glifos.predict()
     elif answers['opcion'] == '2. Reconocimiento de vasijas':
         print("Ejecutando reconocimiento de vasijas")
         vasijas.main()
